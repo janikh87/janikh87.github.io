@@ -1,0 +1,453 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body, #app {
+    font-family: 'Nunito', sans-serif;
+    min-height: 100vh;
+  }
+
+  #app {
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    background: #fff9f0;
+  }
+
+  .screen { display: none; flex-direction: column; align-items: center; gap: 1.2rem; width: 100%; max-width: 480px; }
+  .screen.active { display: flex; }
+
+  .title {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #ff6b6b;
+    text-align: center;
+    letter-spacing: -0.5px;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    color: #888;
+    text-align: center;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 24px;
+    padding: 2rem 1.5rem;
+    width: 100%;
+    box-shadow: 0 4px 0 #ffe0b2;
+    border: 2px solid #ffe0b2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+  }
+
+  .rounds-input {
+    font-family: 'Nunito', sans-serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: #ff6b6b;
+    width: 100px;
+    text-align: center;
+    border: 3px solid #ffcc80;
+    border-radius: 16px;
+    padding: 0.4rem 0.5rem;
+    outline: none;
+    background: #fff9f0;
+  }
+
+  .rounds-input:focus { border-color: #ff9800; }
+
+  .btn {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 0.75rem 2.2rem;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+
+  .btn:active { transform: scale(0.97); }
+
+  .btn-primary {
+    background: #ff6b6b;
+    color: #fff;
+    box-shadow: 0 4px 0 #c0392b;
+  }
+
+  .btn-primary:hover { background: #ff5252; }
+
+  .btn-success {
+    background: #4caf50;
+    color: #fff;
+    box-shadow: 0 4px 0 #2e7d32;
+  }
+
+  .btn-restart {
+    background: #7c4dff;
+    color: #fff;
+    box-shadow: 0 4px 0 #4527a0;
+  }
+
+  .progress-bar-wrap {
+    width: 100%;
+    background: #ffe0b2;
+    border-radius: 50px;
+    height: 14px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff6b6b, #ffca28);
+    border-radius: 50px;
+    transition: width 0.4s ease;
+  }
+
+  .round-label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #bbb;
+    letter-spacing: 0.5px;
+  }
+
+  .equation {
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: #333;
+    letter-spacing: -1px;
+  }
+
+  .answer-input {
+    font-family: 'Nunito', sans-serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: #333;
+    width: 140px;
+    text-align: center;
+    border: 3px solid #ffe0b2;
+    border-radius: 16px;
+    padding: 0.4rem 0.5rem;
+    outline: none;
+    background: #fff9f0;
+  }
+
+  .answer-input:focus { border-color: #ff9800; }
+
+  .feedback {
+    font-size: 1.3rem;
+    font-weight: 700;
+    border-radius: 16px;
+    padding: 0.7rem 1.4rem;
+    text-align: center;
+    width: 100%;
+  }
+
+  .feedback.correct {
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 2px solid #a5d6a7;
+  }
+
+  .feedback.wrong {
+    background: #fff3e0;
+    color: #e65100;
+    border: 2px solid #ffcc80;
+  }
+
+  .emoji-big {
+    font-size: 3.5rem;
+    line-height: 1;
+  }
+
+  .score-display {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #ff6b6b;
+  }
+
+  .score-label {
+    font-size: 1rem;
+    color: #aaa;
+    font-weight: 700;
+  }
+
+  .score-bar-wrap {
+    width: 100%;
+    background: #ffe0b2;
+    border-radius: 50px;
+    height: 18px;
+    overflow: hidden;
+  }
+
+  .score-bar-fill {
+    height: 100%;
+    border-radius: 50px;
+    transition: width 0.8s ease;
+  }
+
+  .stars {
+    font-size: 2rem;
+    letter-spacing: 4px;
+  }
+
+  .decorations {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .deco {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.12;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-12px) rotate(8deg); }
+  }
+
+  #app > * { position: relative; z-index: 1; }
+
+  .confetti-container {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 999;
+  }
+
+  .confetti-piece {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    animation: fall 2s ease-in forwards;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+</style>
+
+<div class="decorations">
+  <span class="deco" style="top:5%;left:3%;animation-delay:0s">⭐</span>
+  <span class="deco" style="top:12%;left:88%;animation-delay:1s">🌈</span>
+  <span class="deco" style="top:70%;left:5%;animation-delay:2s">🎈</span>
+  <span class="deco" style="top:80%;left:90%;animation-delay:0.5s">🦋</span>
+  <span class="deco" style="top:40%;left:92%;animation-delay:1.5s">⭐</span>
+  <span class="deco" style="top:55%;left:2%;animation-delay:2.5s">🌸</span>
+  <span class="deco" style="top:25%;left:50%;animation-delay:3s">🎀</span>
+</div>
+
+<div id="app">
+  <div id="screen-start" class="screen active">
+    <div class="title">🧮 Matema-GRA!</div>
+    <div class="subtitle">Ćwicz mnożenie i dzielenie w super zabawie!</div>
+    <div class="card">
+      <div style="font-size:1rem;font-weight:700;color:#888;">Ile rund chcesz zagrać?</div>
+      <input id="rounds-input" class="rounds-input" type="number" min="1" max="30" value="10">
+      <div style="font-size:0.85rem;color:#ccc;">Wpisz liczbę od 1 do 30</div>
+      <button class="btn btn-primary" onclick="startGame()">🚀 Zaczynamy!</button>
+    </div>
+  </div>
+
+  <div id="screen-game" class="screen">
+    <div class="round-label" id="round-label">Runda 1 z 10</div>
+    <div class="progress-bar-wrap" style="width:100%;max-width:480px;">
+      <div class="progress-bar-fill" id="progress-bar" style="width:0%"></div>
+    </div>
+    <div class="card">
+      <div class="emoji-big" id="game-emoji">🤔</div>
+      <div class="equation" id="equation">? × ? = ?</div>
+      <input id="answer-input" class="answer-input" type="number" placeholder="?" onkeydown="handleKey(event)">
+      <button class="btn btn-primary" id="action-btn" onclick="handleAction()">✔ Sprawdź!</button>
+      <div class="feedback" id="feedback" style="display:none;"></div>
+    </div>
+    <div style="font-size:0.9rem;color:#ccc;font-weight:700;">Wynik: <span id="score-live" style="color:#ff6b6b;">0</span></div>
+  </div>
+
+  <div id="screen-result" class="screen">
+    <div class="title">🎉 Koniec gry!</div>
+    <div class="card">
+      <div class="stars" id="stars-display"></div>
+      <div class="emoji-big" id="result-emoji"></div>
+      <div class="score-label">Twój wynik</div>
+      <div class="score-display" id="final-score"></div>
+      <div class="score-label" id="score-label-text"></div>
+      <div class="score-bar-wrap">
+        <div class="score-bar-fill" id="score-bar" style="width:0%"></div>
+      </div>
+      <div style="font-size:0.95rem;color:#888;text-align:center;" id="result-msg"></div>
+      <button class="btn btn-restart" onclick="restartGame()">🔄 Zagraj jeszcze raz!</button>
+    </div>
+  </div>
+</div>
+
+<div class="confetti-container" id="confetti"></div>
+
+<script>
+  let totalRounds = 10;
+  let currentRound = 0;
+  let score = 0;
+  let currentAnswer = 0;
+  let waitingNext = false;
+
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function startGame() {
+    const val = parseInt(document.getElementById('rounds-input').value);
+    totalRounds = isNaN(val) || val < 1 ? 1 : Math.min(val, 30);
+    currentRound = 0;
+    score = 0;
+    document.getElementById('score-live').textContent = '0';
+    showScreen('screen-game');
+    nextRound();
+  }
+
+  function generateQuestion() {
+    const isMult = Math.random() < 0.5;
+    if (isMult) {
+      let a, b;
+      do {
+        a = Math.floor(Math.random() * 9) + 2;
+        b = Math.floor(Math.random() * 9) + 2;
+      } while (a * b > 50);
+      currentAnswer = a * b;
+      return `${a} × ${b}`;
+    } else {
+      let dividend, divisor;
+      do {
+        divisor = Math.floor(Math.random() * 8) + 2;
+        const multiplier = Math.floor(Math.random() * Math.floor(50 / divisor)) + 1;
+        dividend = divisor * multiplier;
+      } while (dividend > 50 || dividend / divisor < 1);
+      currentAnswer = dividend / divisor;
+      return `${dividend} ÷ ${divisor}`;
+    }
+  }
+
+  function nextRound() {
+    currentRound++;
+    waitingNext = false;
+    const pct = ((currentRound - 1) / totalRounds) * 100;
+    document.getElementById('progress-bar').style.width = pct + '%';
+    document.getElementById('round-label').textContent = `Runda ${currentRound} z ${totalRounds}`;
+    document.getElementById('equation').textContent = generateQuestion() + ' = ?';
+    document.getElementById('answer-input').value = '';
+    document.getElementById('answer-input').disabled = false;
+    document.getElementById('feedback').style.display = 'none';
+    document.getElementById('game-emoji').textContent = ['🤔','🧐','💭','🎯','🌟'][Math.floor(Math.random()*5)];
+    document.getElementById('action-btn').textContent = '✔ Sprawdź!';
+    document.getElementById('answer-input').focus();
+  }
+
+  function handleKey(e) {
+    if (e.key === 'Enter') handleAction();
+  }
+
+  function handleAction() {
+    if (waitingNext) {
+      if (currentRound >= totalRounds) {
+        showResult();
+      } else {
+        nextRound();
+      }
+      return;
+    }
+
+    const input = document.getElementById('answer-input');
+    const val = parseInt(input.value);
+    if (isNaN(val)) {
+      input.focus();
+      return;
+    }
+
+    input.disabled = true;
+    const feedback = document.getElementById('feedback');
+    feedback.style.display = 'block';
+
+    if (val === currentAnswer) {
+      score++;
+      document.getElementById('score-live').textContent = score;
+      feedback.className = 'feedback correct';
+      feedback.textContent = '✅ Brawo! Świetna odpowiedź! 🌟';
+      document.getElementById('game-emoji').textContent = ['🥳','🎉','⭐','🏆','🎊'][Math.floor(Math.random()*5)];
+    } else {
+      feedback.className = 'feedback wrong';
+      feedback.textContent = `❌ Nie tym razem... Prawidłowa odpowiedź to: ${currentAnswer}`;
+      document.getElementById('game-emoji').textContent = '😅';
+    }
+
+    waitingNext = true;
+    const isLast = currentRound >= totalRounds;
+    document.getElementById('action-btn').textContent = isLast ? '🏁 Wyniki!' : '➡ Następne!';
+  }
+
+  function showResult() {
+    showScreen('screen-result');
+    const pct = Math.round((score / totalRounds) * 100);
+    document.getElementById('final-score').textContent = `${score} / ${totalRounds}`;
+    document.getElementById('score-label-text').textContent = `${pct}% poprawnych odpowiedzi`;
+
+    setTimeout(() => {
+      const bar = document.getElementById('score-bar');
+      bar.style.width = pct + '%';
+      if (pct >= 80) bar.style.background = 'linear-gradient(90deg, #4caf50, #8bc34a)';
+      else if (pct >= 50) bar.style.background = 'linear-gradient(90deg, #ff9800, #ffca28)';
+      else bar.style.background = 'linear-gradient(90deg, #ff6b6b, #ff8a65)';
+    }, 100);
+
+    let emoji, msg, stars;
+    if (pct === 100) { emoji='🏆'; msg='Niesamowite! Masz 100%! Jesteś mistrzem matematyki!'; stars='⭐⭐⭐'; }
+    else if (pct >= 80) { emoji='🥳'; msg='Wspaniale! Prawie idealnie, tak trzymaj!'; stars='⭐⭐⭐'; }
+    else if (pct >= 60) { emoji='😊'; msg='Bardzo dobrze! Ćwicz dalej, a będziesz jeszcze lepszy!'; stars='⭐⭐'; }
+    else if (pct >= 40) { emoji='🙂'; msg='Niezły wynik! Trochę więcej ćwiczeń i będzie świetnie!'; stars='⭐'; }
+    else { emoji='💪'; msg='Nie poddawaj się! Matematyka wymaga ćwiczeń — spróbuj jeszcze raz!'; stars='⭐'; }
+
+    document.getElementById('result-emoji').textContent = emoji;
+    document.getElementById('result-msg').textContent = msg;
+    document.getElementById('stars-display').textContent = stars;
+
+    if (pct >= 60) spawnConfetti();
+  }
+
+  function spawnConfetti() {
+    const colors = ['#ff6b6b','#ffca28','#4caf50','#2196f3','#e040fb','#ff9800'];
+    const container = document.getElementById('confetti');
+    container.innerHTML = '';
+    for (let i = 0; i < 60; i++) {
+      const el = document.createElement('div');
+      el.className = 'confetti-piece';
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.top = '-20px';
+      el.style.background = colors[Math.floor(Math.random() * colors.length)];
+      el.style.animationDelay = Math.random() * 1.5 + 's';
+      el.style.animationDuration = (1.5 + Math.random()) + 's';
+      el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      container.appendChild(el);
+    }
+    setTimeout(() => { container.innerHTML = ''; }, 3500);
+  }
+
+  function restartGame() {
+    document.getElementById('confetti').innerHTML = '';
+    showScreen('screen-start');
+  }
+</script>
