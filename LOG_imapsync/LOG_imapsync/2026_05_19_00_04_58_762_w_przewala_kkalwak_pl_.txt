@@ -1,0 +1,90 @@
+Here is imapsync 2.323 /usr/local/bin/imapsync on host CSK206, a linux system with 0.6/31.3 free GiB of RAM, 110.98% used by processes.
+with Perl 5.38.2 and Mail::IMAPClient 3.43
+Transfer started at wtorek 19 maja 2026-05-19 00:04:58 +0200 CEST
+PID is 505287 my PPID is 101608
+Log file is LOG_imapsync/2026_05_19_00_04_58_762_w_przewala_kkalwak_pl_.txt ( to change it, use --logfile path ; or use --nolog to turn off logging )
+Load is 1.97 1.93 2.05 1/3891 on 12 cores
+Real user id is hjanik (uid 1000)
+Effective user id is hjanik (euid 1000)
+$RCSfile: imapsync,v $ $Revision: 2.323 $ $Date: 2026/05/09 12:06:31 $ 
+Command line used, run by /usr/bin/perl:
+/usr/local/bin/imapsync --host1 server723473.nazwa.pl --ssl1 --user1 w.przewala@kkalwak.pl --password1 MASKED --dry
+Current directory is /home/hjanik/projects/edugierki/LOG_imapsync
+Temp directory is /home/hjanik/tmp ( to change it use --tmpdir dirpath )
+Creating temp directory /home/hjanik/tmp
+kill -QUIT 505287 # special behavior: call to sub catch_exit
+kill -TERM 505287 # special behavior: call to sub catch_exit
+kill -INT 505287 # special behavior: call to sub catch_reconnect
+kill -HUP 505287 # special behavior: call to sub catch_print
+kill -USR1 505287 # special behavior: call to sub toggle_sleep
+Logging to a logfile by default. To turn off logging, use --nolog
+Creating directory LOG_imapsync (current directory is /home/hjanik/projects/edugierki/LOG_imapsync)
+Directory LOG_imapsync is writable and readable and gointoable. Good.
+File /home/hjanik/tmp/imapsync.pid does not exist
+PID file is /home/hjanik/tmp/imapsync.pid ( to change it, use --pidfile filepath ; to avoid it use --pidfile "" )
+Writing my PID 505287 in /home/hjanik/tmp/imapsync.pid
+Writing also my logfile name in /home/hjanik/tmp/imapsync.pid : LOG_imapsync/2026_05_19_00_04_58_762_w_przewala_kkalwak_pl_.txt
+Modules version list ( use --no-modulesversion to turn off printing this Perl modules list ):
+Authen::NTLM         1.09
+CGI                  Not installed
+Compress::Zlib       2.204
+Crypt::OpenSSL::RSA  0.41
+Digest::HMAC_MD5     1.05
+Digest::HMAC_SHA1    1.05
+Digest::MD5          2.58_01
+Digest::SHA          6.04
+Encode               3.19
+Encode::IMAPUTF7     1.07
+File::Copy::Recursive 0.45
+File::Spec           3.88
+Getopt::Long         2.54
+HTML::Entities       3.81
+IO::Socket           1.52
+IO::Socket::INET     1.52
+IO::Socket::INET6    Not installed
+IO::Socket::IP       0.4101
+IO::Socket::SSL      2.085
+IO::Tee              0.65
+JSON                 4.11
+JSON::WebToken       0.10
+LWP                  6.76
+MIME::Base64         3.16_01
+Mail::IMAPClient     3.43
+Net::Ping            2.76
+Net::SSLeay          1.94
+Term::ReadKey        2.38
+Test::MockObject     1.20200122
+Time::HiRes          1.9775
+Unicode::String      2.10
+
+Info: will resync flags for already transferred messages. Use --noresyncflags to not resync flags.
+SSL debug mode level is --debugssl 1 (can be set from 0 meaning no debug to 4 meaning max debug)
+Host1: SSL default mode is like --sslargs1 "SSL_verify_mode=0", meaning for host1 SSL_VERIFY_NONE, ie, do not check the server certificate.
+Host1: Use --sslargs1 SSL_verify_mode=1 to have SSL_VERIFY_PEER, ie, check the server certificate. of host1
+Info: turned ON syncinternaldates, will set the internal dates (arrival dates) on host2 same as host1.
+Host1: will try to use LOGIN authentication on host1
+Host2: will try to use LOGIN authentication on host2
+Host1: imap connection timeout is 120 seconds
+Host2: imap connection timeout is 120 seconds
+Host1: imap connection keepalive is on on host1. Use --nokeepalive1 to disable it.
+Host2: imap connection keepalive is on on host2. Use --nokeepalive2 to disable it.
+Host1: IMAP server [server723473.nazwa.pl] port [993] user [w.przewala@kkalwak.pl]
+Host1: connecting and login on host1 [server723473.nazwa.pl] port [993] with user [w.przewala@kkalwak.pl]
+Host1 IP address: 85.128.152.247 Local IP address: 192.168.0.248
+Host1 banner: * OK IMAP4 ready
+Host1 capability before authentication: IMAP4 IMAP4rev1 UIDPLUS AUTH=PLAIN AUTH=OAUTHBEARER AUTH=XOAUTH2 QUOTA AUTH=PLAIN AUTH
+Host1: success login on [server723473.nazwa.pl] with user [w.przewala@kkalwak.pl] auth [LOGIN] or [LOGIN]
+Host1 Buffer I/O: 4096
+Host1: state Authenticated
+Host1 capability once authenticated: IMAP4rev1 LITERAL+ SASL-IR LOGIN-REFERRALS ID ENABLE IDLE SORT SORT=DISPLAY THREAD=REFERENCES THREAD=REFS THREAD=ORDEREDSUBJECT MULTIAPPEND URL-PARTIAL CATENATE UNSELECT CHILDREN NAMESPACE UIDPLUS LIST-EXTENDED I18NLEVEL=1 CONDSTORE QRESYNC ESEARCH ESORT SEARCHRES WITHIN CONTEXT=SEARCH LIST-STATUS BINARY MOVE SNIPPET=FUZZY SPECIAL-USE QUOTA THREAD I18NLEVEL CONTEXT SNIPPET
+Host1: found ID capability. Sending/receiving ID, presented in raw IMAP for now.
+In order to avoid sending/receiving ID, use option --noid
+Sending: 4 ID ("name" "imapsync" "version" "2.323" "os" "linux" "vendor" "Gilles LAMIRAL" "support-url" "https://imapsync.lamiral.info/" "date" "09-May-2026 12:06:31 +0000" "side" "host1")
+Sent 181 bytes
+Read: 	* ID ("name" "Dovecot")
+  	4 OK ID completed (0.001 + 0.000 secs).
+Host1: Compression is off. Use --compress1 to allow compression on host1
+Exiting with return value 0 (EX_OK: successful termination) 0/50 nb_errors/max_errors PID 505287
+Removing pidfile /home/hjanik/tmp/imapsync.pid
+Disconnecting from host1 server723473.nazwa.pl user1 w.przewala@kkalwak.pl
+Log file is LOG_imapsync/2026_05_19_00_04_58_762_w_przewala_kkalwak_pl_.txt ( to change it, use --logfile filepath ; or use --nolog to turn off logging )

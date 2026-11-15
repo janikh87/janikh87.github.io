@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Miesiące i pory roku – quiz</title>
+<link rel="stylesheet" href="wspolne.css">
+</head>
+<body>
+<div class="decos">
+  <span class="deco" style="top:5%;left:3%;animation-delay:0s">🌸</span>
+  <span class="deco" style="top:12%;left:88%;animation-delay:1s">☀️</span>
+  <span class="deco" style="top:70%;left:5%;animation-delay:2s">🍁</span>
+  <span class="deco" style="top:80%;left:90%;animation-delay:0.5s">⛄</span>
+  <span class="deco" style="top:40%;left:92%;animation-delay:1.5s">📅</span>
+  <span class="deco" style="top:55%;left:2%;animation-delay:2.5s">🌈</span>
+</div>
+
+<div id="app">
+  <div id="screen-start" class="screen active">
+    <a class="back-link" href="index.html">← Wszystkie gry</a>
+    <div class="title">📅 Kalendarz-QUIZ!</div>
+    <div class="subtitle">Miesiące i pory roku po angielsku — wybierz dobrą odpowiedź!</div>
+    <div class="card">
+      <div style="font-size:clamp(0.9rem,3vw,1rem);font-weight:700;color:#888;">W którą stronę tłumaczymy?</div>
+      <div class="mode-list">
+        <button class="mode-btn" data-mode="pl-en">🇵🇱 → 🇬🇧 Polski na angielski<small>widzisz „styczeń”, wybierasz „January”</small></button>
+        <button class="mode-btn" data-mode="en-pl">🇬🇧 → 🇵🇱 Angielski na polski<small>widzisz „January”, wybierasz „styczeń”</small></button>
+        <button class="mode-btn selected" data-mode="mix">🔀 Na zmianę<small>raz tak, raz tak</small></button>
+      </div>
+      <div style="font-size:0.8rem;color:#bbb;text-align:center;">16 pytań: wszystkie 12 miesięcy i 4 pory roku</div>
+      <button class="btn btn-primary" onclick="startGame()">🚀 Zaczynamy!</button>
+    </div>
+    <a class="back-link" href="miesiace-litery.html">✏️ Druga gra: brakujące literki →</a>
+  </div>
+
+  <div id="screen-game" class="screen">
+    <div class="top-bar">
+      <div class="round-label" id="round-label">Słowo 1 z 16</div>
+      <div class="score-live">Wynik: <span id="score-live">0</span></div>
+      <button class="btn btn-reset" onclick="confirmReset()">🔄 Reset</button>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-fill" id="progress-bar" style="width:0%"></div>
+    </div>
+    <div class="card">
+      <span class="tag" id="q-tag">miesiąc</span>
+      <div class="emoji-big" id="q-emoji">🤔</div>
+      <div class="word-big" id="q-word"></div>
+      <div class="hint" id="q-hint"></div>
+      <div class="options" id="options"></div>
+      <div class="feedback" id="feedback" style="display:none;"></div>
+      <button class="btn btn-primary" id="next-btn" style="display:none;" onclick="nextRound()">➡ Następne!</button>
+    </div>
+  </div>
+
+  <div id="screen-result" class="screen">
+    <div class="title">🎉 Koniec gry!</div>
+    <div class="card">
+      <div class="stars" id="stars-display"></div>
+      <div class="emoji-big" id="result-emoji"></div>
+      <div style="font-size:0.9rem;color:#aaa;font-weight:700;">Twój wynik</div>
+      <div class="score-display" id="final-score"></div>
+      <div style="font-size:0.85rem;color:#bbb;" id="score-pct-label"></div>
+      <div class="score-bar-wrap"><div class="score-bar-fill" id="score-bar" style="width:0%"></div></div>
+      <div class="result-msg" id="result-msg"></div>
+      <button class="btn btn-restart" onclick="restartGame()">🔄 Zagraj jeszcze raz!</button>
+    </div>
+    <a class="back-link" href="index.html">← Wszystkie gry</a>
+    <a class="back-link" href="miesiace-litery.html">✏️ Spróbuj gry w brakujące literki →</a>
+  </div>
+</div>
+
+<div class="confetti-wrap" id="confetti"></div>
+
+<script src="kalendarz.js"></script>
+<script>
+let mode = 'mix', queue = [], idx = 0, score = 0, answered = false;
+initModeButtons(m => { mode = m; });
+
+function startGame() {
+  queue = shuffle(ALL_WORDS);
+  idx = -1; score = 0;
+  document.getElementById('score-live').textContent = '0';
+  showScreen('screen-game');
+  nextRound();
+}
+
+function nextRound() {
+  idx++;
+  if (idx >= queue.length) {
+    showResult(score, queue.length, 'Niesamowite! 100%! Znasz wszystkie miesiące i pory roku!');
+    return;
+  }
+  answered = false;
+  setProgress(idx, queue.length);
+  const word = queue[idx];
+  const dir = mode === 'mix' ? pick(['pl-en', 'en-pl']) : mode;
+  const from = dir === 'pl-en' ? 'pl' : 'en';
+  const to = dir === 'pl-en' ? 'en' : 'pl';
+
+  // Błędne odpowiedzi z tej samej kategorii (miesiące z miesięcy, pory roku z pór roku).
+  const pool = word.kind === 'month' ? MONTHS : SEASONS;
+  const wrong = shuffle(pool.filter(w => w !== word)).slice(0, 3);
+  const choices = shuffle([word, ...wrong]);
+
+  document.getElementById('q-tag').textContent = word.kind === 'month' ? 'miesiąc' : 'pora roku';
+  document.getElementById('q-emoji').textContent = word.emoji;
+  document.getElementById('q-word').textContent = word[from];
+  document.getElementById('q-hint').textContent = to === 'en' ? 'Jak to jest po angielsku?' : 'Co to znaczy po polsku?';
+
+  const box = document.getElementById('options');
+  box.innerHTML = '';
+  choices.forEach(c => {
+    const b = document.createElement('button');
+    b.className = 'opt';
+    b.textContent = c[to];
+    b.onclick = () => answer(b, c === word, word[to]);
+    box.appendChild(b);
+  });
+  document.getElementById('feedback').style.display = 'none';
+  document.getElementById('next-btn').style.display = 'none';
+}
+
+function answer(btn, ok, correctText) {
+  if (answered) return;
+  answered = true;
+  document.querySelectorAll('.opt').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === correctText) b.classList.add('good');
+  });
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'block';
+  if (ok) {
+    score++;
+    document.getElementById('score-live').textContent = score;
+    fb.className = 'feedback correct';
+    fb.textContent = '✅ Brawo! ' + pick(['Świetnie! 🌟', 'Super! 🎉', 'Tak trzymaj! 🏆']);
+  } else {
+    btn.classList.add('bad');
+    fb.className = 'feedback wrong';
+    fb.textContent = `❌ Nie tym razem... Poprawnie: ${correctText}`;
+  }
+  const next = document.getElementById('next-btn');
+  next.textContent = idx + 1 >= queue.length ? '🏁 Wyniki!' : '➡ Następne!';
+  next.style.display = 'block';
+  next.focus();
+}
+</script>
+</body>
+</html>
